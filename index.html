@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure AZ-104 演習 | az-104-study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#0D1117;--surface:#161B22;--surface2:#1C2128;--border:#21262D;--border2:#30363D;
+  --text:#E6EDF3;--muted:#7D8590;--hint:#4A5568;
+  --blue:#0078D4;--blue-dim:#0D2A45;--blue-text:#60ABFB;
+  --green:#34D058;--green-dim:#0D2E1A;--green-text:#56E87A;
+  --red:#F85149;--red-dim:#2E0D0D;--red-text:#FF7B72;
+  --amber:#E3B341;--amber-dim:#2A1F06;--amber-text:#F0C96A;
+  --purple:#C084FC;--purple-dim:#1E1030;--purple-text:#D8A4FC;
+  --teal:#39D353;--teal-dim:#0A2E1C;
+  --r:10px;--rl:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:1.5rem 1rem 6rem}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:8px;flex-wrap:wrap}
+.hdr-left h1{font-size:18px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+.hdr-left p{font-size:12px;color:var(--muted);margin-top:2px}
+.hdr-right{display:flex;gap:8px;align-items:center}
+.btn-study{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border2);color:var(--muted);font-size:13px;text-decoration:none;transition:all .2s}
+.btn-study:hover{border-color:var(--blue);color:var(--blue-text)}
+.btn-ghost{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--r);background:transparent;border:1px solid transparent;color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s}
+.btn-ghost:hover{background:var(--surface);color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.5rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 8px;text-align:center}
+.stat-n{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.stat-l{font-size:11px;color:var(--muted);margin-top:1px}
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.cat{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s}
+.cat:hover:not(:disabled){border-color:var(--border2);color:var(--text)}
+.cat.on{background:var(--blue-dim);border-color:var(--blue);color:var(--blue-text)}
+.cat:disabled{opacity:.3;cursor:not-allowed}
+.cat-cnt{font-size:10px;opacity:.7}
+.prog-track{height:3px;background:var(--surface2);border-radius:2px;margin-bottom:1.25rem;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#60ABFB);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.375rem;margin-bottom:1rem}
+.qmeta{display:flex;gap:6px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:500;border:1px solid transparent}
+.b-blue{background:var(--blue-dim);color:var(--blue-text);border-color:rgba(0,120,212,.3)}
+.b-purple{background:var(--purple-dim);color:var(--purple-text);border-color:rgba(192,132,252,.3)}
+.b-amber{background:var(--amber-dim);color:var(--amber-text);border-color:rgba(227,179,65,.3)}
+.b-red{background:var(--red-dim);color:var(--red-text);border-color:rgba(248,81,73,.3)}
+.b-green{background:var(--green-dim);color:var(--green-text);border-color:rgba(52,208,88,.3)}
+.b-teal{background:var(--teal-dim);color:#6EE7A0;border-color:rgba(57,211,83,.3)}
+.b-coral{background:#2E100A;color:#FFA07A;border-color:rgba(255,100,50,.3)}
+.qnum{font-size:12px;color:var(--hint);margin-left:auto;font-variant-numeric:tabular-nums}
+.qtxt{font-size:15px;line-height:1.75;margin-bottom:1.125rem;color:var(--text)}
+.opts{display:flex;flex-direction:column;gap:8px;margin-bottom:1.125rem}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:var(--r);border:1px solid var(--border);border-left:3px solid transparent;cursor:pointer;background:var(--surface2);transition:border-color .15s, background .15s;position:relative;overflow:hidden}
+.opt:hover:not(.dis){border-color:var(--border2);border-left-color:var(--blue);background:#1a2332}
+.opt.ok{background:var(--green-dim);border-color:rgba(52,208,88,.4);border-left-color:var(--green);animation:slideIn .25s ease}
+.opt.ng{background:var(--red-dim);border-color:rgba(248,81,73,.4);border-left-color:var(--red);animation:slideIn .25s ease}
+.opt.show-ok{background:var(--green-dim);border-color:rgba(52,208,88,.4);border-left-color:var(--green)}
+.opt.dis{cursor:default}
+@keyframes slideIn{from{transform:translateX(-4px);opacity:.7}to{transform:translateX(0);opacity:1}}
+.opt-k{width:24px;height:24px;border-radius:50%;background:var(--bg);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--muted);flex-shrink:0;margin-top:1px;transition:all .2s}
+.opt.ok .opt-k{background:var(--green);color:#000;border-color:var(--green)}
+.opt.show-ok .opt-k{background:var(--green);color:#000;border-color:var(--green)}
+.opt.ng .opt-k{background:var(--red);color:#fff;border-color:var(--red)}
+.opt-t{font-size:13.5px;line-height:1.6;color:var(--text)}
+.exp{display:none;margin-bottom:1rem}
+.exp.show{display:block}
+.exp-why{background:var(--blue-dim);border:1px solid rgba(0,120,212,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.exp-lbl{font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-bottom:5px}
+.exp-lbl.lbl-why{color:var(--blue-text)}
+.exp-lbl.lbl-trap{color:var(--amber-text)}
+.exp-txt{font-size:13px;line-height:1.7}
+.exp-txt.txt-why{color:#A8CFFC}
+.exp-trap{background:var(--amber-dim);border:1px solid rgba(227,179,65,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.exp-txt.txt-trap{color:#E8D08A}
+.cmp-wrap{overflow-x:auto;margin-bottom:8px}
+.cmp-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:440px}
+.cmp-tbl th{background:var(--bg);padding:7px 10px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)}
+.cmp-tbl td{padding:7px 10px;border-bottom:1px solid var(--border);line-height:1.5;color:var(--text)}
+.cmp-tbl tr:last-child td{border-bottom:none}
+.cmp-tbl .rec td{background:rgba(52,208,88,.07);color:var(--green-text)}
+.kws{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.kw{font-size:11px;padding:2px 8px;border-radius:6px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+.actions{display:flex;gap:8px;justify-content:space-between;align-items:center}
+.btn-p{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border-radius:var(--r);background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn-p:hover{background:#006abc}
+.streak{font-size:12px;background:var(--amber-dim);color:var(--amber-text);border:1px solid rgba(227,179,65,.3);padding:3px 10px;border-radius:6px}
+.result{display:none;text-align:center;padding:3rem 1rem 2rem}
+.result.show{display:block}
+.result-ring{width:100px;height:100px;border-radius:50%;border:3px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;position:relative}
+.result-ring svg{position:absolute;top:-3px;left:-3px;transform:rotate(-90deg)}
+.result-sc{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.result-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.result-msg{font-size:15px;color:var(--text);margin:1rem auto;max-width:360px;line-height:1.6}
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:1.25rem 0;text-align:left}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px}
+.domain-name{font-size:12px;font-weight:600;margin-bottom:4px}
+.domain-bar{height:4px;background:var(--bg);border-radius:2px;overflow:hidden;margin-bottom:3px}
+.domain-bar-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .6s .2s}
+.domain-rate{font-size:11px;color:var(--muted)}
+.result-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:1.5rem}
+@media(max-width:540px){
+  .sidebar-mock{display:none}
+  .bottom-nav{display:flex!important}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:.5rem;z-index:100;gap:4px}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:var(--r);border:none;background:transparent;color:var(--muted);font-size:10px;cursor:pointer;transition:all .15s;text-decoration:none}
+.bnav-item.active,.bnav-item:hover{color:var(--blue-text);background:var(--blue-dim)}
+.bnav-item i{font-size:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-left">
+      <h1><i class="ti ti-brand-azure" style="color:#0078D4;font-size:22px"></i>AZ-104 演習</h1>
+      <p>Microsoft Azure Administrator — 全ドメイン対応</p>
+    </div>
+    <div class="hdr-right">
+      <a class="btn-study" href="study.html"><i class="ti ti-book"></i>参考書</a>
+      <button class="btn-ghost" onclick="restart()"><i class="ti ti-refresh"></i>リセット</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="sTotal">0</div><div class="stat-l">回答数</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--green-text)" id="sOk">0</div><div class="stat-l">正解</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--red-text)" id="sNg">0</div><div class="stat-l">不正解</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--blue-text)" id="sRate">—</div><div class="stat-l">正答率</div></div>
+  </div>
+
+  <div class="cats" id="catRow"></div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+
+  <div id="qCard" class="qcard">
+    <div class="qmeta">
+      <span class="badge b-blue" id="qCat"></span>
+      <span class="badge" id="qDiff"></span>
+      <span class="badge" id="qDomain"></span>
+      <span class="qnum" id="qNum"></span>
+    </div>
+    <div class="qtxt" id="qTxt"></div>
+    <div class="opts" id="opts"></div>
+    <div class="exp" id="exp">
+      <div class="exp-why"><div class="exp-lbl lbl-why">✓ 正解の理由</div><div class="exp-txt txt-why" id="expWhy"></div></div>
+      <div class="exp-trap"><div class="exp-lbl lbl-trap">⚠ 落とし穴</div><div class="exp-txt txt-trap" id="expTrap"></div></div>
+      <div id="cmpWrap"></div>
+      <div class="kws" id="kwWrap"></div>
+    </div>
+    <div class="actions">
+      <button class="btn-ghost" onclick="skipQ()"><i class="ti ti-player-skip-forward"></i>スキップ</button>
+      <span id="streakBadge"></span>
+      <button class="btn-p" id="nextBtn" onclick="nextQ()" style="display:none"><i class="ti ti-arrow-right"></i>次の問題</button>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-ring">
+      <svg width="106" height="106" viewBox="0 0 106 106"><circle cx="53" cy="53" r="50" fill="none" stroke="var(--border)" stroke-width="6"/><circle id="resultArc" cx="53" cy="53" r="50" fill="none" stroke="#0078D4" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 314"/></svg>
+      <div><div class="result-sc" id="resultSc">0/0</div><div class="result-sub" id="resultRate">0%</div></div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="domain-grid" id="domainGrid"></div>
+    <div class="result-btns">
+      <button class="btn-p" onclick="restart()"><i class="ti ti-refresh"></i>もう一度</button>
+      <a class="btn-study" href="study.html"><i class="ti ti-book"></i>参考書を見る</a>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="bnav-item active" onclick="restart()"><i class="ti ti-refresh"></i>リセット</button>
+  <a class="bnav-item" href="study.html" style="text-decoration:none"><i class="ti ti-book"></i>参考書</a>
+</nav>
+
+<script>
+const DOMAINS=["全て","ID管理","ストレージ","コンピューティング","ネットワーク","監視","バックアップ"];
+const DOMAIN_COLORS={"ID管理":"b-purple","ストレージ":"b-blue","コンピューティング":"b-teal","ネットワーク":"b-coral","監視":"b-amber","バックアップ":"b-green"};
+const DIFF_COLORS={"Easy":"b-green","Medium":"b-amber","Hard":"b-red"};
+
+const QS=[
+  // ── ID管理 ──
+  {domain:"ID管理",cat:"Azure AD / Entra ID",diff:"Medium",q:"新入社員のAzureポータルへのアクセスを許可しながら、サブスクリプションのリソースを変更できないようにしたい。最小権限の原則に従って割り当てるべき組み込みロールは？",opts:["Owner","Contributor","Reader","User Access Administrator"],ans:2,why:"Readerロールはリソースの閲覧のみを許可し、作成・変更・削除の権限を持たない。最小権限の原則に従い、閲覧のみが必要なユーザーにはReaderが最適。",trap:"Contributorはリソースの作成・変更が可能だが、ロールの割り当て権限がない。Ownerはすべての権限を持つため過剰。User Access Administratorはロール割り当て専用。",cmp:[{svc:"Owner",feature:"全権限+ロール割り当て",rto:"最高権限",cost:"—",note:"管理者のみ"},{svc:"Contributor",feature:"作成・変更・削除（ロール割り当て除く）",rto:"開発者向け",cost:"—",note:"変更権限あり"},{svc:"Reader",feature:"閲覧のみ",rto:"最小権限",cost:"—",note:"✓ 推奨"},{svc:"User Access Admin",feature:"ロール割り当てのみ",rto:"アクセス管理専用",cost:"—",note:"特殊用途"}],kws:["RBAC","Reader","最小権限","組み込みロール","Azure RBAC"]},
+  {domain:"ID管理",cat:"Azure AD / Entra ID",diff:"Medium",q:"複数のAzureサービス（Key Vault・Storage・SQL Database）にアクセスする必要があるAzure VM上のアプリケーションがある。資格情報をコードやキーボルトに保存せずにアクセスを実現するには？",opts:["サービスプリンシパルを作成し、クライアントシークレットをApp Settingsに保存","ユーザーのAzure AD認証情報を使用","VMにSystem-assigned Managed Identityを有効化し、対象リソースにRBACロールを割り当て","Azure Key Vaultにシークレットを保存してVMから参照"],ans:2,why:"Managed Identity（マネージドID）はAzure ADによりVMに自動でIDが付与され、資格情報を管理することなくAzureサービスへの認証が可能。System-assignedはVMのライフサイクルに紐付き、VMが削除されると自動的に削除される。",trap:"サービスプリンシパルはクライアントシークレットの管理が必要で、ローテーションを手動で行う必要がある。ユーザー認証情報の共有はセキュリティ上不適切。Key Vaultも最初のアクセスに認証が必要。",cmp:[{svc:"Managed Identity",feature:"資格情報不要・自動管理",rto:"最も安全",cost:"無料",note:"✓ 推奨"},{svc:"サービスプリンシパル",feature:"フレキシブル・外部アプリ向け",rto:"シークレット管理が必要",cost:"無料",note:"手動ローテーションが必要"},{svc:"Key Vault",feature:"シークレット集中管理",rto:"初回認証が必要",cost:"低",note:"Managed Identityと組み合わせ推奨"}],kws:["Managed Identity","System-assigned","サービスプリンシパル","資格情報なし","RBAC"]},
+  {domain:"ID管理",cat:"条件付きアクセス",diff:"Hard",q:"全社員が多要素認証（MFA）を使用するよう義務付け、さらに会社管理外のデバイスからの管理ポータルアクセスをブロックしたい。最適な方法は？",opts:["各ユーザーアカウントでMFAを個別に有効化","Azure AD Conditional Access Policyを作成し、MFA要求と準拠デバイス条件を設定","Azure AD Identity Protectionのみを使用","Microsoft Authenticatorアプリを全員に配布するだけ"],ans:1,why:"条件付きアクセス（Conditional Access）ポリシーはユーザー・グループ・アプリケーション・デバイス状態などの条件に基づいてアクセス制御を自動化できる。MFA要求と「準拠デバイスが必要」条件を組み合わせることで両方の要件を1つのポリシーで満たせる。",trap:"個別のMFA設定はユーザーが大量の場合管理が困難で例外も作りにくい。Identity Protectionはリスクベースの保護だがポリシーの細かい制御はできない。Authenticatorアプリの配布だけではMFAを強制できない。",cmp:[{svc:"Conditional Access",feature:"条件ベースの自動アクセス制御",rto:"一元管理・柔軟",cost:"Azure AD P1以上",note:"✓ 推奨"},{svc:"Per-user MFA",feature:"ユーザー個別設定",rto:"シンプル",cost:"無料",note:"大規模管理に不向き"},{svc:"Identity Protection",feature:"リスクベース検出",rto:"AI駆動",cost:"Azure AD P2",note:"Conditional Accessと補完的"}],kws:["Conditional Access","MFA","準拠デバイス","Azure AD P1","アクセス制御"]},
+  {domain:"ID管理",cat:"PIM",diff:"Hard",q:"グローバル管理者（Global Administrator）ロールを持つ人数を最小化しながら、緊急時にはすぐにロールを取得できるようにしたい。また、ロール使用時には承認と監査ログが必要。最適なソリューションは？",opts:["Global Adminロールを全管理者に常時割り当てる","Azure AD Privileged Identity Management (PIM)でグローバル管理者を『適格（Eligible）』に設定し承認ワークフローを構成","セキュリティグループにGlobal Adminを割り当て、必要なユーザーをグループに追加","Azure Policy を使用してロール割り当てを制限する"],ans:1,why:"PIM（Privileged Identity Management）はJust-In-Timeな特権アクセスを提供し、ロールをEligible（適格）として設定することで必要な時だけロールをアクティベートできる。承認ワークフロー・期限設定・監査ログがすべて組み込まれている。",trap:"常時割り当ては攻撃対象面が大きくなる。セキュリティグループへの割り当てはJIT（Just-In-Time）アクセスを提供しない。Azure PolicyはAzureリソースのガバナンスでAD ロール管理には使えない。",cmp:[{svc:"PIM Eligible",feature:"JIT・承認・監査",rto:"アクティブ化に数分",cost:"Azure AD P2",note:"✓ 推奨"},{svc:"常時割り当て",feature:"即座にアクセス可能",rto:"0分",cost:"無料",note:"攻撃リスクが高い"},{svc:"グループ経由",feature:"一括管理",rto:"即座",cost:"無料",note:"JITなし"}],kws:["PIM","Just-In-Time","Eligible","Global Administrator","特権アクセス管理"]},
+  {domain:"ID管理",cat:"ユーザー管理",diff:"Medium",q:"人事システムからAzure AD（Entra ID）へのユーザープロビジョニングを自動化したい。ユーザーの入社・異動・退職に合わせてアカウントを自動作成・更新・無効化するには？",opts:["PowerShellスクリプトを毎日実行してCSVから同期","Azure AD Connect を使用してオンプレミスADと同期","HR システムのSCIM 2.0エンドポイントを活用し、Azure ADのInbound Provisioningを設定","Azure Logic Appsで独自の同期フローを構築"],ans:2,why:"Azure ADのInbound User Provisioningは、SAP SuccessFactors・Workday等のHRシステムからSCIM 2.0経由でユーザーを自動プロビジョニング・デプロビジョニングできる。入社・異動・退職に対応したライフサイクル管理が可能。",trap:"PowerShellスクリプトは手動管理が必要でリアルタイムではない。Azure AD ConnectはオンプレミスADとの同期でHRシステムとの直接統合ではない。Logic Appsは自分でフローを構築する必要があり複雑。",cmp:[{svc:"SCIM Inbound Provisioning",feature:"HRシステムと自動同期",rto:"リアルタイム",cost:"Azure AD P1以上",note:"✓ 推奨"},{svc:"Azure AD Connect",feature:"オンプレミスAD同期",rto:"ほぼリアルタイム",cost:"無料",note:"HRシステム直接統合には不向き"},{svc:"PowerShell",feature:"柔軟なカスタム処理",rto:"スケジュール実行",cost:"無料",note:"リアルタイム不可"}],kws:["SCIM","Inbound Provisioning","HR統合","ユーザーライフサイクル","自動プロビジョニング"]},
+  {domain:"ID管理",cat:"ゲストアクセス",diff:"Medium",q:"取引先企業のユーザーにAzure上のSharePoint・Teamsへのアクセスを付与したい。取引先のAzure ADアカウントをそのまま使わせながらアクセス管理をしたい。最適な方法は？",opts:["取引先ユーザーのために新しいAzure ADアカウントを作成","Azure AD B2B Collaboration（外部ゲスト招待）を使用","Azure AD B2Cを使用","VPNを構築して取引先ネットワークから接続させる"],ans:1,why:"Azure AD B2B（Business-to-Business）Collaborationは外部ユーザーを自社のAzure ADにゲストとして招待する機能。取引先は自社のAzure ADまたはMicrosoftアカウントでサインインでき、追加アカウントが不要。アクセス許可はAzure ADのRBACや条件付きアクセスで管理できる。",trap:"新しいアカウントを作成すると別の資格情報を管理する必要があり、取引先のIDライフサイクルに連動しない。B2CはCustomer（消費者）向けで企業間ではない。VPNは必要以上のアクセスを許可する可能性がある。",cmp:[{svc:"B2B Collaboration",feature:"既存IDでゲストアクセス",rto:"招待後すぐ",cost:"無料（一定数まで）",note:"✓ 推奨"},{svc:"B2C",feature:"消費者向けIDプラットフォーム",rto:"—",cost:"MAUベース",note:"企業間には不適切"},{svc:"新規アカウント",feature:"完全なコントロール",rto:"—",cost:"無料",note:"管理負担が大きい"}],kws:["B2B Collaboration","ゲストユーザー","外部ID","招待","クロステナント"]},
+
+  // ── ストレージ ──
+  {domain:"ストレージ",cat:"Azure Blob Storage",diff:"Medium",q:"大量の画像データを保存するAzure Blob Storageアカウントがある。過去90日以内のデータは頻繁にアクセスされるが、90日以上のデータはほとんどアクセスされない。コストを最適化する最も効果的な方法は？",opts:["すべてのデータをHot アクセス層に保持","すべてのデータをCool アクセス層に移動","ライフサイクル管理ポリシーを作成して90日後にCool層、365日後にArchive層へ移動","定期的に古いデータを手動で削除"],ans:2,why:"Blob Storageのライフサイクル管理ポリシーはルールベースでブロブの層を自動移行できる。Hot（頻繁アクセス）→Cool（低頻度）→Archive（ほぼアクセスなし）の順でコストが下がる。自動化により管理負担もなくなる。",trap:"すべてをHotに保持するとストレージコストが最も高くなる。すべてCoolにすると新しいデータのアクセスコストが上がる。手動削除は管理負担が大きく誤りのリスクがある。",cmp:[{svc:"Hot層",feature:"頻繁アクセス向け",rto:"低レイテンシー",cost:"ストレージ高・アクセス低",note:"アクティブデータ"},{svc:"Cool層",feature:"低頻度アクセス",rto:"Hot同等",cost:"ストレージ低・アクセス中",note:"30日以上保持推奨"},{svc:"Archive層",feature:"ほぼアクセスなし",rto:"リハイドレート数時間",cost:"ストレージ最安",note:"180日以上推奨"}],kws:["Blob Storage","ライフサイクル管理","Hot","Cool","Archive","コスト最適化"]},
+  {domain:"ストレージ",cat:"Azure Files",diff:"Medium",q:"オンプレミスの多数のWindowsサーバーがSMBファイル共有を使用している。これをAzureに移行してオンプレミスサーバーとAzure間でファイルを同期させ、オンプレミスのキャッシュとして機能させたい。最適なソリューションは？",opts:["Azure Blob StorageにSMBで接続","Azure Files + Azure File Syncを使用","Azure NetApp Filesを使用","Azure StorSimpleを使用"],ans:1,why:"Azure File Syncは、Azure Filesをクラウドベースのファイル共有として使用しながら、オンプレミスのWindowsファイルサーバーをキャッシュとして機能させる。クラウドの階層化（Cloud Tiering）により、よく使うファイルをオンプレミスに保持し、残りはAzureに保存することでストレージ効率を最大化できる。",trap:"Blob StorageはSMBをネイティブサポートしない（NFS/SMBはAzure Filesの機能）。Azure NetApp FilesはエンタープライズNAS向けで高価。StorSimpleはレガシーサービス。",cmp:[{svc:"Azure File Sync",feature:"SMB+クラウド階層化",rto:"オンプレキャッシュ",cost:"中",note:"✓ 推奨"},{svc:"Azure Files のみ",feature:"SMBクラウド共有",rto:"VPN/ExpressRoute必要",cost:"低",note:"オンプレキャッシュなし"},{svc:"Azure NetApp Files",feature:"高パフォーマンスNFS/SMB",rto:"低レイテンシー",cost:"高",note:"エンタープライズ向け"}],kws:["Azure File Sync","Azure Files","SMB","クラウド階層化","Cloud Tiering","ハイブリッド"]},
+  {domain:"ストレージ",cat:"冗長性",diff:"Medium",q:"東日本リージョンのAzure Storageアカウントに重要なビジネスデータが保存されている。リージョン全体の障害が発生した場合でもデータにアクセスできるようにしたい。かつ、フェイルオーバー後も読み取り可能にしたい。最適な冗長性オプションは？",opts:["LRS（ローカル冗長ストレージ）","ZRS（ゾーン冗長ストレージ）","GRS（地理冗長ストレージ）","GZRS（地理ゾーン冗長ストレージ）"],ans:3,why:"GZRS（Geo-Zone-Redundant Storage）はプライマリリージョンで3つのAvailability Zoneに同期的にデータをコピーし、さらにセカンダリリージョンにも非同期でコピーする。ゾーン障害とリージョン障害の両方から保護される最高レベルの冗長性。Read-access GZRSを選べばセカンダリリージョンからも読み取り可能。",trap:"LRSは同一データセンター内でのみ冗長化でリージョン障害に対応不可。ZRSはゾーン冗長だがリージョン障害には対応不可。GRSはセカンダリへのレプリケーションはあるが、プライマリ内のゾーン冗長がない。",cmp:[{svc:"LRS",feature:"3コピー（同一DC）",rto:"RPO最小",cost:"最安",note:"リージョン障害リスクあり"},{svc:"ZRS",feature:"3AZにコピー",rto:"ゾーン障害対応",cost:"中",note:"リージョン障害リスクあり"},{svc:"GRS",feature:"セカンダリリージョンへコピー",rto:"リージョン障害対応",cost:"高",note:"プライマリゾーン冗長なし"},{svc:"GZRS",feature:"ZRS+GRS",rto:"最高可用性",cost:"最高",note:"✓ 推奨"}],kws:["GZRS","冗長性","GRS","ZRS","地理冗長","リージョン障害"]},
+  {domain:"ストレージ",cat:"SAS",diff:"Hard",q:"外部パートナーに特定のBlob Storageコンテナへの一時的な書き込みアクセスを付与したい。アクセスは1時間後に自動的に失効させ、パートナーのIPアドレス範囲のみに制限したい。最適な方法は？",opts:["パートナー用のAzure ADアカウントを作成してContributorロールを付与","ストレージアカウントのアクセスキーをパートナーに共有","IP制限とSASポリシーを組み合わせたService SASを発行","コンテナを一時的にパブリックアクセスに変更"],ans:2,why:"SAS（Shared Access Signature）はストレージリソースへの委任アクセスを提供し、有効期限・許可IP・権限（読み取り/書き込み等）を細かく制御できる。Stored Access PolicyをSASに紐付けることで、発行後も権限を失効させることができる。",trap:"Azure ADアカウントの作成は外部パートナーには複雑すぎ、ライフサイクル管理が必要。アクセスキーはアカウント全体へのフルアクセスで期限設定もできない。パブリックアクセスは誰でもアクセスできてしまう。",cmp:[{svc:"SAS (Service SAS)",feature:"細かい権限・期限・IP制限",rto:"即時発行",cost:"無料",note:"✓ 推奨"},{svc:"アクセスキー",feature:"シンプル",rto:"即時",cost:"無料",note:"フルアクセス・期限なし"},{svc:"Azure AD + RBAC",feature:"統合認証",rto:"—",cost:"無料",note:"外部パートナーには複雑"}],kws:["SAS","Shared Access Signature","Stored Access Policy","IP制限","一時アクセス"]},
+  {domain:"ストレージ",cat:"Azure Disk",diff:"Medium",q:"Azure VMのOSディスクに対して、1日1回のスナップショットを30日間保持する自動バックアップを構成したい。最も簡単な方法は？",opts:["PowerShellスクリプトをAutomationで毎日実行","Azure Backupを使用してVMバックアップポリシーを設定","ストレージアカウントに手動でスナップショットを作成","Azure Site Recoveryを使用"],ans:1,why:"Azure BackupはVMレベルのバックアップをポリシーベースで自動化できる。バックアップポリシーでスケジュール（毎日）・保持期間（30日）を設定するだけで、エージェントのインストールも不要（Azure VM Backup）。復旧も簡単に実行できる。",trap:"PowerShellスクリプトは管理が複雑で障害時の対応が必要。手動スナップショットは自動化できない。Site RecoveryはDR（障害復旧）向けでバックアップの用途とは異なる。",cmp:[{svc:"Azure Backup",feature:"ポリシーベース自動バックアップ",rto:"RTO/RPO設定可能",cost:"バックアップデータ量",note:"✓ 推奨"},{svc:"スナップショット",feature:"シンプル・高速",rto:"手動",cost:"スナップショット料金",note:"自動化が別途必要"},{svc:"Site Recovery",feature:"リージョン間DR",rto:"分単位",cost:"高",note:"バックアップとは別用途"}],kws:["Azure Backup","バックアップポリシー","スナップショット","VM Backup","保持期間"]},
+
+  // ── コンピューティング ──
+  {domain:"コンピューティング",cat:"VM管理",diff:"Medium",q:"本番VMを週末の間（土曜夜から月曜朝まで）停止してコストを削減したい。毎週自動的に実行したい。最もシンプルな方法は？",opts:["手動で毎週停止・起動する","Azure Automationのスケジュールを設定してStart/Stop VMs runbookを使用","Logic AppsでVMの起動停止フローを作成","Azure DevOpsパイプラインで自動化"],ans:1,why:"Azure AutomationのStart/Stop VMs during off-hours機能（またはAutomation Runbook）は、VMをスケジュールに従って自動的に起動・停止する。夜間・週末の停止でコストを大幅に削減できる組み込みの仕組みが用意されている。",trap:"手動対応は忘れるリスクがある。Logic Appsは機能するが設定が複雑。Azure DevOpsはCI/CD向けでVM管理が主用途ではない。",cmp:[{svc:"Azure Automation",feature:"スケジュール自動起動停止",rto:"設定が簡単",cost:"無料枠あり",note:"✓ 推奨"},{svc:"Logic Apps",feature:"視覚的ワークフロー",rto:"柔軟",cost:"実行回数課金",note:"過剰に複雑"},{svc:"手動",feature:"—",rto:"—",cost:"無料",note:"忘れるリスク"}],kws:["Azure Automation","Start/Stop VM","スケジュール","コスト削減","Runbook"]},
+  {domain:"コンピューティング",cat:"スケーリング",diff:"Medium",q:"Webアプリを実行するVM Scale Set（VMSS）がある。CPU使用率が70%を超えた場合にインスタンスを追加し、30%を下回ったら削減したい。最適な設定は？",opts:["固定数のVMを常時稼働させる","VM Scale Setにカスタム自動スケーリングルールを設定してCPUメトリクスに基づいてスケールアウト/インを構成","手動でVMを追加・削除する","Azure Load Balancerで複数VMに分散するだけ"],ans:1,why:"VM Scale Setの自動スケーリング（Auto Scale）はメトリクス（CPU・メモリ・カスタム）に基づいてインスタンス数を自動的に増減できる。スケールアウト（追加）とスケールイン（削減）の閾値とインスタンス数の増減値を個別に設定できる。",trap:"固定数ではトラフィック変動に対応できない。手動スケーリングはリアルタイム対応が困難。Load Balancerだけではスケーリングは行えない（分散のみ）。",cmp:[{svc:"VMSS Auto Scale",feature:"メトリクスベース自動スケール",rto:"数分",cost:"VMコストのみ",note:"✓ 推奨"},{svc:"固定スケール",feature:"予測可能",rto:"即時",cost:"常時VM料金",note:"コスト非効率"},{svc:"スケジュールスケール",feature:"時間帯ベース",rto:"事前定義",cost:"VMコストのみ",note:"メトリクスに非対応"}],kws:["VM Scale Set","VMSS","Auto Scale","CPU","自動スケーリング","スケールアウト"]},
+  {domain:"コンピューティング",cat:"App Service",diff:"Medium",q:"Azure App ServiceでホストされているWebアプリに対して、デプロイ前に本番環境でのテストを行いたい。新バージョンのデプロイ後に問題があった場合は即座に以前のバージョンに戻せるようにしたい。最適な機能は？",opts:["毎回新しいApp Serviceを作成してDNSを切り替える","App ServiceのDeployment Slots（デプロイスロット）を使用","Azure Traffic Managerで複数リージョンに分散","Dockerコンテナを使って手動で切り替え"],ans:1,why:"Deployment Slotsは本番スロット（production）とは別のスロット（staging等）でアプリをテストし、問題なければスロットをスワップ（入れ替え）して本番に昇格できる。スワップはウォームアップ後に実行されるため、ダウンタイムがなく、問題時はすぐに元のスロットに戻せる。",trap:"DNSの切り替えはTTLのため即時ではなく、ウォームアップも別途必要。Traffic Managerはマルチリージョン分散向けでこの要件には過剰。手動のコンテナ切り替えは複雑。",cmp:[{svc:"Deployment Slots",feature:"ゼロダウンタイムスワップ・即時ロールバック",rto:"秒単位",cost:"スタンダード以上",note:"✓ 推奨"},{svc:"DNS切り替え",feature:"シンプル",rto:"TTL依存",cost:"無料",note:"ウォームアップなし"},{svc:"Traffic Manager",feature:"マルチリージョン分散",rto:"DNS依存",cost:"有料",note:"要件に過剰"}],kws:["Deployment Slots","スロットスワップ","Blue/Green","ロールバック","ゼロダウンタイム"]},
+  {domain:"コンピューティング",cat:"コンテナ",diff:"Hard",q:"マイクロサービスアーキテクチャを採用したWebアプリをAzureにデプロイしたい。サービス検出・負荷分散・スケーリング・セルフヒーリングが必要。インフラ管理は最小化したい。最適なサービスは？",opts:["Azure VM上に手動でDockerを構築","Azure Container Instances（ACI）を使用","Azure Kubernetes Service（AKS）を使用","Azure Container Apps（ACA）を使用"],ans:2,why:"AKS（Azure Kubernetes Service）はマネージドKubernetesを提供し、サービス検出・負荷分散・自動スケーリング（HPA）・セルフヒーリング・ローリングアップデートをネイティブにサポートする。コントロールプレーンはAzureが管理するためインフラ管理負担が軽減される。",trap:"VM上のDockerは管理負担が大きくオーケストレーション機能がない。ACIは単一コンテナの実行に適しているがオーケストレーション機能が限定的。ACAはサーバーレスコンテナでシンプルなケースに向いているが、複雑なK8sワークロードにはAKSが適切。",cmp:[{svc:"AKS",feature:"フルK8sオーケストレーション",rto:"高い柔軟性",cost:"ノードVM料金",note:"✓ マイクロサービス向け"},{svc:"ACA",feature:"サーバーレスコンテナ",rto:"シンプル",cost:"消費ベース",note:"シンプルなワークロード向け"},{svc:"ACI",feature:"単一コンテナ実行",rto:"高速起動",cost:"秒単位課金",note:"オーケストレーションなし"}],kws:["AKS","Kubernetes","マイクロサービス","HPA","セルフヒーリング","コンテナオーケストレーション"]},
+  {domain:"コンピューティング",cat:"Azure Functions",diff:"Medium",q:"Blob Storageに新しいファイルがアップロードされるたびに画像をリサイズする処理を実行したい。サーバーのプロビジョニングなしに最もコスト効率よく実装する方法は？",opts:["常時起動のVMにファイル監視スクリプトを配置","Azure App Service WebJobsを使用","Azure FunctionsのBlob Storageトリガーを使用","Logic Appsで毎分Blobコンテナをポーリング"],ans:2,why:"Azure FunctionsのBlobトリガーは新しいBlobが作成されると自動的に関数を起動する。サーバーレスのため実行時間のみ課金され、スケーリングも自動。従量課金プランでは無料枠も提供されている。",trap:"常時起動VMは使用しない時間帯もコストが発生する。WebJobsはApp Serviceのプロビジョニングが必要。Logic Appsのポーリングは新規アップロードを即座に検知できず遅延が生じる。",cmp:[{svc:"Functions Blob Trigger",feature:"イベント駆動・サーバーレス",rto:"秒以内",cost:"実行時間のみ",note:"✓ 推奨"},{svc:"Logic Apps",feature:"ローコード・ビジュアル",rto:"ポーリング間隔",cost:"実行回数",note:"遅延あり"},{svc:"VM常時起動",feature:"完全なコントロール",rto:"即時",cost:"常時VM料金",note:"コスト非効率"}],kws:["Azure Functions","Blobトリガー","サーバーレス","イベント駆動","従量課金"]},
+
+  // ── ネットワーク ──
+  {domain:"ネットワーク",cat:"VNet",diff:"Medium",q:"本番環境（VNet-Prod）と開発環境（VNet-Dev）の2つのVNetがある。本番のSQL ServerにのみDevからアクセスさせたい。インターネットを経由せずに低レイテンシーで接続したい。最適な方法は？",opts:["両VNetをパブリックIPで接続","VNet Peering（VNetピアリング）を使用して2つのVNetを接続","サイト間VPNで接続","Azure FirewallをVNet間に配置"],ans:1,why:"VNet Peeringは2つのVNet間をMicrosoftのバックボーンネットワークで接続し、インターネットを経由しない低レイテンシー・高帯域幅の接続を提供する。NSG（ネットワークセキュリティグループ）でトラフィックを特定のリソース（SQL Server）に限定できる。",trap:"パブリックIPを使った接続はインターネットを経由しセキュリティリスクが高い。VPNはオンプレミス接続向けでVNet間には低レイテンシーのPeeringが適切。Azure Firewallは通常インターネット向けトラフィックのフィルタリングに使う。",cmp:[{svc:"VNet Peering",feature:"低レイテンシー・バックボーン接続",rto:"即時",cost:"転送データ量",note:"✓ 推奨"},{svc:"VPN Gateway",feature:"暗号化トンネル",rto:"VPNスループット制限",cost:"ゲートウェイ料金",note:"オンプレミス接続向け"},{svc:"Azure Firewall",feature:"L7フィルタリング",rto:"低レイテンシー",cost:"高",note:"VNet間の詳細制御に追加"}],kws:["VNet Peering","VNet","バックボーン接続","NSG","低レイテンシー"]},
+  {domain:"ネットワーク",cat:"NSG",diff:"Medium",q:"WebサブネットからDBサブネットへのポート1433（SQL）のみ許可し、それ以外のすべてのトラフィックをブロックしたい。またインターネットからのDBへの直接アクセスも防ぎたい。どのリソースにNSGを適用するか？",opts:["VNet全体にNSGを1つ適用","WebサブネットとDBサブネット両方、またはDBサブネットのNICにNSGを適用","インターネットゲートウェイにNSGを適用","Azure FirewallのルールとしてNSGを設定"],ans:1,why:"NSGはサブネットまたはNIC（ネットワークインターフェース）に適用できる。DBサブネットのNSGで「Webサブネットからポート1433のみ許可、その他拒否」というルールを設定することで、WebからDBへの必要なトラフィックのみ許可できる。Denyアクセスルールはインターネットからのアクセスも自動的にブロックする（デフォルトDenyルール）。",trap:"VNet全体への単一NSGでは細かい制御が難しい。インターネットゲートウェイにはNSGを直接適用できない。Azure FirewallとNSGは別のサービスでNSGはL3-L4の基本制御。",cmp:[{svc:"サブネットNSG",feature:"サブネット全体への適用",rto:"シンプルな管理",cost:"無料",note:"✓ 推奨"},{svc:"NIC NSG",feature:"個別VMへの適用",rto:"細かい制御",cost:"無料",note:"管理が複雑"},{svc:"Azure Firewall",feature:"L7フィルタリング・ログ",rto:"より高度な制御",cost:"高",note:"NSGと併用可能"}],kws:["NSG","ネットワークセキュリティグループ","サブネット","ポート制限","デフォルトDeny"]},
+  {domain:"ネットワーク",cat:"DNS",diff:"Medium",q:"Azure Blob StorageとSQL Databaseへのアクセスをパブリックインターネットを経由させずに、VNet内からプライベートに行いたい。最適な構成は？",opts:["サービスエンドポイント（Service Endpoint）を使用","Private Endpoint + Azure Private DNSゾーンを使用","VNet GatewayとVPNを使用","NATゲートウェイを使用"],ans:1,why:"Private Endpointはサービスへのプライベートなネットワーク接続をVNetのプライベートIPアドレスとして作成する。Private DNS Zoneと組み合わせることで、サービスのFQDNが自動的にプライベートIPに解決される。トラフィックがMicrosoftのバックボーンのみを経由し、インターネットを経由しない。",trap:"Service EndpointはVNet外からのトラフィックをサービス側でブロックするが、プライベートIPは提供されない。VPN GatewayはオンプレミスとのVPN接続向け。NATゲートウェイはアウトバウンドのNAT変換でリソースへのプライベートアクセスは提供しない。",cmp:[{svc:"Private Endpoint",feature:"プライベートIP・完全に非公開",rto:"最も安全",cost:"エンドポイント料金",note:"✓ 推奨"},{svc:"Service Endpoint",feature:"ルーティング最適化",rto:"設定シンプル",cost:"無料",note:"パブリックIPは残る"},{svc:"VPN Gateway",feature:"オンプレミス接続",rto:"暗号化",cost:"ゲートウェイ料金",note:"この用途には不向き"}],kws:["Private Endpoint","Private DNS","サービスエンドポイント","プライベート接続","VNet"]},
+  {domain:"ネットワーク",cat:"ロードバランサー",diff:"Hard",q:"インターネット向けWebアプリへのリクエストをAzure VMのバックエンドプールに分散したい。さらに、URLパスに基づいて異なるバックエンドに振り分けたい（/api/→APIサーバー、/static/→Storageアカウント）。最適なサービスは？",opts:["Azure Load Balancer（Basic）","Azure Load Balancer（Standard）","Azure Application Gateway","Azure Front Door"],ans:2,why:"Application GatewayはL7（HTTP/HTTPS）ロードバランサーで、URLパスベースルーティング・ホストベースルーティング・SSL終端・WAF統合などHTTP特化の機能を提供する。/api/と/static/へのパスベースルーティングはアプリケーションゲートウェイのURL-based routingで実現できる。",trap:"Azure Load Balancer（BasicとStandard）はL4（TCP/UDP）ロードバランサーでURLパスを解析できない。Azure Front DoorはグローバルなCDN・WAFサービスで、このケースは単一リージョンなのでApplication Gatewayが適切。",cmp:[{svc:"Application Gateway",feature:"L7・URLパスルーティング・WAF",rto:"リージョン単位",cost:"中",note:"✓ 推奨"},{svc:"Standard Load Balancer",feature:"L4・高パフォーマンス",rto:"低レイテンシー",cost:"低",note:"URLパス不可"},{svc:"Front Door",feature:"グローバルL7・CDN・WAF",rto:"マルチリージョン",cost:"高",note:"グローバル向け"}],kws:["Application Gateway","URLパスルーティング","L7","WAF","ロードバランサー"]},
+  {domain:"ネットワーク",cat:"ExpressRoute",diff:"Hard",q:"オンプレミスのデータセンターとAzure間で、インターネットを経由しない専用接続が必要。最低10Gbpsの帯域が必要で、接続が1本切れてもサービスを継続したい。最適な構成は？",opts:["サイト間VPN（IPSec）を2本構成","ExpressRoute回路を1本構成","ExpressRoute回路を2本（異なるプロバイダー）＋ExpressRoute Global Reach","ExpressRoute + サイト間VPNをフェイルオーバーとして構成"],ans:2,why:"冗長なExpressRoute構成では、2つの異なるプロバイダーからの回路を使用することで、1つのプロバイダー障害でも接続を維持できる。ExpressRouteは最大100Gbpsをサポートし、10Gbpsの要件を満たす。Global Reachを使うとオンプレミス拠点間もAzureのバックボーン経由で接続できる。",trap:"VPNはインターネットを経由するため専用接続の要件を満たさない。ExpressRoute 1本は冗長性が不足。VPN+ExpressRouteはExpressRoute切断時にVPN（インターネット経由）にフォールバックするので完全な専用接続ではなくなる。",cmp:[{svc:"ExpressRoute×2（別プロバイダー）",feature:"完全冗長・専用接続",rto:"フェイルオーバー自動",cost:"最高",note:"✓ 推奨"},{svc:"ExpressRoute×1",feature:"専用接続",rto:"単一障害点あり",cost:"高",note:"冗長性不足"},{svc:"S2S VPN×2",feature:"冗長化可能",rto:"インターネット経由",cost:"低",note:"専用接続ではない"}],kws:["ExpressRoute","専用接続","冗長化","10Gbps","Global Reach","ハイブリッド"]},
+
+  // ── 監視 ──
+  {domain:"監視",cat:"Azure Monitor",diff:"Medium",q:"Azure VM・App Service・SQL Databaseのメトリクスを一か所で可視化し、チームでリアルタイムに監視したい。また、CPUが80%を超えた場合にメールで通知したい。最適な構成は？",opts:["各リソースのポータル画面を個別に確認","Azure MonitorとAzure Dashboardで複数リソースのメトリクスを一元表示し、メトリクスアラートルールを作成","Azure Service Healthのみを使用","Application Insightsのみを使用"],ans:1,why:"Azure Monitorはインフラ・アプリ・ネットワーク全体のメトリクス・ログ・トレースを統合監視するプラットフォーム。メトリクスエクスプローラーでカスタムダッシュボードを作成し、アラートルールでCPU閾値を設定してAction Group経由でメール通知できる。",trap:"個別確認は俯瞰的な監視ができない。Service HealthはAzure自体の障害情報で自分のリソースのメトリクス監視ではない。Application InsightsはアプリのAPM（トレース・依存関係）向けでインフラメトリクスの一元管理ではない。",cmp:[{svc:"Azure Monitor",feature:"全リソース統合監視・アラート",rto:"リアルタイム",cost:"データ取り込み量",note:"✓ 推奨"},{svc:"Application Insights",feature:"アプリAPM・トレース",rto:"リアルタイム",cost:"データ量",note:"アプリ特化・インフラ監視は別途"},{svc:"Service Health",feature:"Azureサービス障害情報",rto:"障害発生時",cost:"無料",note:"自リソースのメトリクスではない"}],kws:["Azure Monitor","メトリクス","アラートルール","Action Group","ダッシュボード"]},
+  {domain:"監視",cat:"Log Analytics",diff:"Medium",q:"複数のAzure VMとオンプレミスサーバーのOSログ・イベントログを中央で収集・検索・分析したい。ログを30日間保持し、Kusto Query Language（KQL）で分析したい。最適な構成は？",opts:["各VMのAzure Storageにログを保存して手動で確認","Log Analytics ワークスペースを作成し、Azure Monitor Agent（AMA）でVMのログを収集","Azure Event Hubsにログを送信","Azure Storage Accountのみに保存"],ans:1,why:"Log Analytics ワークスペースはAzureとオンプレミスのリソースからログを集中収集し、KQL（Kusto Query Language）で柔軟なクエリ・分析が可能。Azure Monitor Agent（AMA）をVMにインストールするだけで収集が始まり、保持期間も設定できる。",trap:"Storageへの保存はKQLで分析できず検索が困難。Event Hubsはストリームデータのルーティングでログ分析は別途必要。Azure Storageだけでは一元的なクエリができない。",cmp:[{svc:"Log Analytics",feature:"KQL・一元分析・保持設定",rto:"数分での取り込み",cost:"データ取り込み量",note:"✓ 推奨"},{svc:"Azure Storage",feature:"安価な長期保存",rto:"手動確認",cost:"最安",note:"分析機能なし"},{svc:"Event Hubs",feature:"高スループットストリーム",rto:"リアルタイム",cost:"中",note:"分析は別途必要"}],kws:["Log Analytics","KQL","Azure Monitor Agent","ログ収集","ワークスペース"]},
+  {domain:"監視",cat:"Application Insights",diff:"Medium",q:"Azure App ServiceでホストされているWebアプリのレスポンスタイム・エラー率・依存関係（SQL・外部API）の呼び出し状況をリアルタイムに監視したい。最適なサービスは？",opts:["Azure Monitor メトリクスエクスプローラー","Application Insights","Azure Network Watcher","Azure Service Health"],ans:1,why:"Application Insights はアプリケーションのAPM（Application Performance Management）サービスで、リクエスト・依存関係・例外・パフォーマンスカウンターを自動収集する。アプリコードへのSDK統合またはコードレスアタッチで設定でき、ライブメトリクス・アプリケーションマップ・障害分析が使える。",trap:"Azure MonitorメトリクスはインフラレベルのCPU/メモリ等で依存関係の追跡はできない。Network WatcherはネットワークのフローログやNSG診断向け。Service HealthはAzureサービス自体の障害情報。",cmp:[{svc:"Application Insights",feature:"APM・依存関係・トレーシング",rto:"リアルタイム",cost:"データ量",note:"✓ 推奨"},{svc:"Azure Monitor",feature:"インフラメトリクス",rto:"リアルタイム",cost:"データ量",note:"依存関係追跡なし"},{svc:"Network Watcher",feature:"ネットワーク診断",rto:"オンデマンド",cost:"一部有料",note:"アプリ監視ではない"}],kws:["Application Insights","APM","依存関係","トレーシング","ライブメトリクス"]},
+  {domain:"監視",cat:"アラート",diff:"Hard",q:"あるAzure SQLデータベースのDTU使用率が90%を超えた状態が5分間続いた場合に、自動的にサービスティアをアップグレードするロジックを実装したい。最適な構成は？",opts:["Azure Portalで手動で確認してアップグレード","Azure Monitor アラートルール + Action Group + Azure Automation Runbook","Logic Appsでポーリングして確認","Azure Advisor の推奨事項を定期的に確認"],ans:1,why:"Azure Monitor アラートルールでDTU使用率の条件（90%超・5分）を設定し、Action GroupでAzure Automation Runbookをトリガーする。RunbookにSQL Database のSKU変更のコードを記述することで自動スケールアップが実現する。",trap:"手動確認は遅延が生じ、5分の条件が満たされても即座に対応できない。Logic Appsでのポーリングは遅延が生じメトリクスの集約条件の設定が複雑。Azure Advisorは推奨事項の表示のみで自動化機能はない。",cmp:[{svc:"Monitor Alert + Automation",feature:"条件トリガー・自動スケール",rto:"条件達成後数分",cost:"Automation料金",note:"✓ 推奨"},{svc:"Logic Apps",feature:"ビジュアルワークフロー",rto:"ポーリング間隔",cost:"実行回数",note:"メトリクス集約が複雑"},{svc:"手動",feature:"完全なコントロール",rto:"即時対応不可",cost:"無料",note:"スケール遅延"}],kws:["Azure Monitor","アラートルール","Action Group","Automation Runbook","自動スケール"]},
+
+  // ── バックアップ ──
+  {domain:"バックアップ",cat:"Azure Backup",diff:"Medium",q:"東日本リージョンにある複数のAzure VMのバックアップを設定したい。バックアップデータ自体がリージョン障害で失われないようにし、かつコストを最小化したい。Recovery Services Vaultのどのストレージ冗長オプションを選ぶべきか？",opts:["LRS（ローカル冗長ストレージ）","GRS（地理冗長ストレージ）","ZRS（ゾーン冗長ストレージ）","どれでも変わらない"],ans:1,why:"Recovery Services VaultのGRS（地理冗長）オプションはバックアップデータをプライマリリージョン（東日本）だけでなくセカンダリリージョン（西日本）にも自動でコピーする。リージョン障害時にもセカンダリリージョンからバックアップデータにアクセス・リストアできる。Cross Region Restore機能を使うとセカンダリへのリストアも可能。",trap:"LRSは同一リージョンの複数のストレージノードにコピーするだけで、リージョン障害の場合はバックアップごと失われる可能性がある。ZRSはゾーン障害には対応するがリージョン障害には対応しない。",cmp:[{svc:"GRS",feature:"リージョン間冗長・Cross Region Restore",rto:"リージョン障害対応",cost:"LRSの約2倍",note:"✓ 推奨"},{svc:"LRS",feature:"低コスト",rto:"ゾーン/リージョン障害に弱い",cost:"最安",note:"リージョン障害リスクあり"},{svc:"ZRS",feature:"ゾーン冗長",rto:"ゾーン障害対応",cost:"中",note:"リージョン障害には非対応"}],kws:["Recovery Services Vault","GRS","バックアップ冗長性","Cross Region Restore","リージョン障害"]},
+  {domain:"バックアップ",cat:"Azure Site Recovery",diff:"Hard",q:"本番Azure VMが東日本リージョンで稼働している。リージョン全体の障害が発生した際に、西日本リージョンへ数分以内にフェイルオーバーできるDR構成を組みたい。最適なサービスは？",opts:["毎日GRSストレージにVMのスナップショットを保存","Azure Backupを使用して定期バックアップ","Azure Site Recovery（ASR）でVMをセカンダリリージョンにレプリケーション","手動でVMを西日本に再構築するRunbookを用意"],ans:2,why:"Azure Site Recovery（ASR）は継続的なレプリケーションにより、VMのデータをセカンダリリージョンにリアルタイムでコピーする。フェイルオーバーはPortalまたはRecovery Planから数クリックで実行でき、RPO（復旧ポイント目標）は数分、RTO（復旧時間目標）も数分〜十数分を実現できる。",trap:"スナップショットは最終スナップショット以降のデータが失われる（RPOが大きい）。Azure Backupは長期保管向けでフェイルオーバーには不向き（RTO が大きい）。手動再構築はRTOが数時間以上になる。",cmp:[{svc:"Azure Site Recovery",feature:"継続レプリケーション・自動フェイルオーバー",rto:"RTO分単位・RPO秒単位",cost:"VM料金+ASR料金",note:"✓ 推奨"},{svc:"Azure Backup",feature:"定期バックアップ",rto:"RTO数時間",cost:"低",note:"DRには不向き"},{svc:"スナップショット",feature:"シンプル",rto:"RTO数時間以上",cost:"スナップショット料金",note:"RPOが大きい"}],kws:["Azure Site Recovery","DR","フェイルオーバー","レプリケーション","RPO","RTO","リージョン間"]},
+  {domain:"バックアップ",cat:"Azure Backup",diff:"Medium",q:"オンプレミスのWindowsサーバー上のファイル・フォルダーをAzureにバックアップし、99日間保持したい。オンプレミスサーバーの管理は継続しつつ、バックアップのみをクラウドに移したい。最適な方法は？",opts:["手動でAzure Blob StorageにファイルをアップロードするスクリプトをTaskSchedulerで実行","Azure Backup（MARSエージェント）をサーバーにインストールしRecovery Services Vaultにバックアップ","Azure File Syncでクラウドと同期","Azure Migrate でサーバーをAzureに移行"],ans:1,why:"MARS（Microsoft Azure Recovery Services）エージェントはオンプレミスWindowsサーバーにインストールし、ファイル・フォルダー・システム状態をAzure Recovery Services Vaultに直接バックアップできる。保持ポリシーで最大99年まで設定でき、AzureポータルからバックアップジョブとリカバリーポイントをGUIで管理できる。",trap:"手動スクリプトは管理負担が大きく失敗時の検知が難しい。File SyncはDRバックアップではなくクラウドへのファイル同期で、誤削除も同期されてしまう。Migrateはサーバーをクラウドに移行するもので、オンプレ継続の要件に反する。",cmp:[{svc:"MARS Agent",feature:"オンプレ→Azure直接バックアップ",rto:"数時間",cost:"バックアップデータ量",note:"✓ 推奨"},{svc:"Azure File Sync",feature:"クラウドとのファイル同期",rto:"リアルタイム",cost:"中",note:"バックアップではない"},{svc:"DPM/MABS",feature:"高機能バックアップ",rto:"高機能",cost:"DPM/MABSライセンス",note:"大規模環境向け"}],kws:["MARS","Azure Backup","Recovery Services Vault","オンプレミス","ファイルバックアップ"]},
+];
+
+const DOMAINS_ARR=["全て","ID管理","ストレージ","コンピューティング","ネットワーク","監視","バックアップ"];
+let cur=0,answered=false,total=0,ok=0,ng=0,streak=0,activeDomain="全て",pool=[],domainStats={};
+DOMAINS_ARR.slice(1).forEach(d=>{domainStats[d]={ok:0,total:0}});
+
+function countDomain(d){return d==="全て"?QS.length:QS.filter(q=>q.domain===d).length}
+function buildPool(){pool=QS.filter(q=>activeDomain==="全て"||q.domain===activeDomain).sort(()=>Math.random()-.5);cur=0}
+
+function initCats(){
+  const r=document.getElementById('catRow');
+  DOMAINS_ARR.forEach(d=>{
+    const cnt=countDomain(d);
+    const b=document.createElement('button');
+    b.className='cat'+(d==="全て"?' on':'');
+    b.disabled=cnt===0;
+    b.innerHTML=d+(d!=="全て"?`<span class="cat-cnt">${cnt}</span>`:'');
+    b.onclick=()=>{
+      document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');activeDomain=d;buildPool();renderQ();
+    };
+    r.appendChild(b);
+  });
+}
+
+function renderQ(){
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('qCard').style.display='block';
+  if(cur>=pool.length){showResult();return}
+  const q=pool[cur];
+  answered=false;
+  document.getElementById('qCat').textContent=q.cat;
+  document.getElementById('qDiff').textContent=q.diff;
+  document.getElementById('qDiff').className='badge '+(DIFF_COLORS[q.diff]||'b-amber');
+  document.getElementById('qDomain').textContent=q.domain;
+  document.getElementById('qDomain').className='badge '+(DOMAIN_COLORS[q.domain]||'b-purple');
+  document.getElementById('qNum').textContent=(cur+1)+' / '+pool.length;
+  document.getElementById('progFill').style.width=(cur/pool.length*100)+'%';
+  document.getElementById('qTxt').textContent=q.q;
+  const oc=document.getElementById('opts');oc.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const d=document.createElement('div');d.className='opt';
+    d.innerHTML=`<div class="opt-k">${'ABCDE'[i]}</div><div class="opt-t">${o}</div>`;
+    d.onclick=()=>selectOpt(i);oc.appendChild(d);
+  });
+  document.getElementById('exp').className='exp';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('streakBadge').textContent='';
+  document.getElementById('streakBadge').className='';
+}
+
+function selectOpt(i){
+  if(answered)return;answered=true;
+  const q=pool[cur];
+  document.querySelectorAll('.opt').forEach(o=>o.classList.add('dis'));
+  const opts=document.querySelectorAll('.opt');
+  if(i===q.ans){opts[i].classList.add('ok');ok++;streak++;if(domainStats[q.domain])domainStats[q.domain].ok++}
+  else{opts[i].classList.add('ng');opts[q.ans].classList.add('show-ok');ng++;streak=0}
+  total++;
+  if(domainStats[q.domain])domainStats[q.domain].total++;
+  updateStats();
+  document.getElementById('expWhy').textContent=q.why;
+  document.getElementById('expTrap').textContent=q.trap;
+  const cw=document.getElementById('cmpWrap');
+  if(q.cmp&&q.cmp.length){
+    cw.innerHTML=`<div class="cmp-wrap"><table class="cmp-tbl"><thead><tr><th>サービス</th><th>特徴</th><th>RTO/特性</th><th>コスト</th><th>備考</th></tr></thead><tbody>`+
+    q.cmp.map((r,ri)=>`<tr ${ri===0?'class="rec"':''}><td>${r.svc}</td><td>${r.feature}</td><td>${r.rto}</td><td>${r.cost}</td><td>${r.note}</td></tr>`).join('')+
+    `</tbody></table></div>`;
+  }else{cw.innerHTML=''}
+  document.getElementById('kwWrap').innerHTML=q.kws.map(k=>`<span class="kw">${k}</span>`).join('');
+  document.getElementById('exp').className='exp show';
+  document.getElementById('nextBtn').style.display='inline-flex';
+  if(streak>=3){const sb=document.getElementById('streakBadge');sb.className='streak';sb.textContent=streak+'連続正解 🔥'}
+}
+
+function updateStats(){
+  document.getElementById('sTotal').textContent=total;
+  document.getElementById('sOk').textContent=ok;
+  document.getElementById('sNg').textContent=ng;
+  document.getElementById('sRate').textContent=total>0?Math.round(ok/total*100)+'%':'—';
+}
+function nextQ(){cur++;renderQ()}
+function skipQ(){cur++;renderQ()}
+
+function showResult(){
+  document.getElementById('qCard').style.display='none';
+  document.getElementById('result').classList.add('show');
+  const rate=total>0?Math.round(ok/total*100):0;
+  document.getElementById('resultSc').textContent=ok+'/'+total;
+  document.getElementById('resultRate').textContent=rate+'%';
+  const circ=314;
+  document.getElementById('resultArc').setAttribute('stroke-dasharray',Math.round(circ*rate/100)+' '+circ);
+  document.getElementById('resultArc').setAttribute('stroke',rate>=70?'#34D058':rate>=50?'#E3B341':'#F85149');
+  document.getElementById('resultMsg').textContent=rate>=70?'合格ライン突破！AZ-104合格まであと一歩！':rate>=50?'半分以上正解！苦手分野を重点的に復習しましょう。':'基礎から丁寧に積み上げていきましょう。参考書で要点を確認！';
+  const dg=document.getElementById('domainGrid');
+  dg.innerHTML=Object.entries(domainStats).filter(([,v])=>v.total>0).map(([d,v])=>`
+    <div class="domain-card">
+      <div class="domain-name">${d}</div>
+      <div class="domain-bar"><div class="domain-bar-fill" style="width:${Math.round(v.ok/v.total*100)}%"></div></div>
+      <div class="domain-rate">${v.ok}/${v.total} · ${Math.round(v.ok/v.total*100)}%</div>
+    </div>`).join('');
+}
+
+function restart(){
+  cur=0;total=0;ok=0;ng=0;streak=0;
+  DOMAINS_ARR.slice(1).forEach(d=>{domainStats[d]={ok:0,total:0}});
+  activeDomain="全て";
+  document.querySelectorAll('.cat').forEach((b,i)=>b.classList.toggle('on',i===0));
+  updateStats();buildPool();
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('qCard').style.display='block';
+  renderQ();
+}
+
+initCats();buildPool();renderQ();
+</script>
+</body>
+</html>
