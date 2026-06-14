@@ -1,7 +1,7 @@
 # azure-az104-study
 
 ![Azure AZ-104](https://img.shields.io/badge/Azure-AZ--104-0078D4?logo=microsoftazure&logoColor=white)
-![問題数](https://img.shields.io/badge/問題数-28問-blue)
+![問題数](https://img.shields.io/badge/問題数-100問-blue)
 ![Vanilla JS](https://img.shields.io/badge/JS-Vanilla-F7DF1E?logo=javascript&logoColor=black)
 ![No build](https://img.shields.io/badge/build-none-lightgrey)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -17,13 +17,13 @@ Azure Administrator (AZ-104) の試験対策用 Web アプリです。
 
 | 分野 | 問題数 | カバーするトピック |
 |---|---|---|
-| ID管理 | 6問 | RBAC・Managed Identity・Conditional Access・PIM・B2B・SCIM Provisioning |
-| ネットワーク | 5問 | VNet Peering・NSG・Private Endpoint・Application Gateway・ExpressRoute |
-| ストレージ | 5問 | Blobライフサイクル・Azure Files + File Sync・冗長性・SAS・Disk Backup |
-| コンピューティング | 5問 | Azure Automation・VMSS Auto Scale・Deployment Slots・AKS・Functions |
-| 監視 | 4問 | Azure Monitor・Log Analytics・Application Insights・Network Watcher |
-| バックアップ | 3問 | Azure Backup・Site Recovery・MARS エージェント |
-| **合計** | **28問** | Medium中心 / Hard 含む |
+| ID管理 | 20問 | RBAC・Managed Identity・Conditional Access・PIM・B2B・SCIM Provisioning |
+| ネットワーク | 15問 | VNet Peering・NSG・Private Endpoint・Application Gateway・ExpressRoute |
+| ストレージ | 20問 | Blobライフサイクル・Azure Files + File Sync・冗長性・SAS・Disk Backup |
+| コンピューティング | 25問 | Azure Automation・VMSS Auto Scale・Deployment Slots・AKS・Functions |
+| 監視 | 12問 | Azure Monitor・Log Analytics・Application Insights・Network Watcher |
+| バックアップ | 8問 | Azure Backup・Site Recovery・MARS エージェント |
+| **合計** | **100問** | Medium中心 / Hard 含む |
 
 各問題には **正解の理由・落とし穴・サービス比較表・キーワード** が付いています。
 
