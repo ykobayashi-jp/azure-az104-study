@@ -1,118 +1,115 @@
 # azure-az104-study
 
-AZ-104（Microsoft Azure Administrator）試験対策のための自学習Webアプリ。  
-問題演習（`index.html`）と参考書（`study.html`）の2ファイル構成で、サーバー不要・ブラウザだけで動作する。
+![AZ-104](https://img.shields.io/badge/Azure-AZ--104-0078D4?logo=microsoftazure&logoColor=white)
+![問題数](https://img.shields.io/badge/問題数-100問-blue)
+![Vanilla JS](https://img.shields.io/badge/JS-Vanilla-F7DF1E?logo=javascript&logoColor=black)
+![No build](https://img.shields.io/badge/build-none-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+Azure Administrator (AZ-104) の試験対策用 Web アプリです。  
+問題演習・詳細解説・サービス比較表・参考書をブラウザだけで完結させます。
 
 ---
 
-## ファイル構成
+## 📋 コンテンツ概要
+
+### 問題演習 (`index.html`)
+
+| 分野 | 問題数 | カバーするトピック |
+|---|---|---|
+| ネットワーク | 25問 | VNet・NSG・VPN・DNS・Private Endpoint・Firewall・Load Balancer・Bastion |
+| ID管理 | 20問 | 条件付きアクセス・RBAC・PIM・Managed Identity・B2B・SSPR・Identity Protection |
+| コンピューティング | 20問 | VM可用性・App Service・AKS・ACI・Azure Functions・VMSS・Update Manager |
+| ストレージ | 15問 | Blob・Files・Disk・冗長性（LRS/ZRS/GRS）・CDN・Soft Delete・SAS |
+| 監視 | 12問 | Azure Monitor・Log Analytics・KQL・Application Insights・Microsoft Sentinel |
+| バックアップ | 8問 | Azure Backup・Site Recovery・PITR・Soft Delete・保持ポリシー |
+| **合計** | **100問** | Easy 9問 / Medium 57問 / Hard 34問 |
+
+各問題には **正解の理由・落とし穴・サービス比較表・キーワード** が付いています。
+
+### 参考書 (`study.html`)
+
+| セクション | 内容 |
+|---|---|
+| チートシート | 各分野のサービスを要点カード形式でまとめ |
+| サービス比較表 | LRS/ZRS/GRS・App Service vs ACI vs AKS・LB vs AG vs Front Door など |
+| 分野別ポイント | 試験で狙われるポイントと落とし穴を分野ごとに整理 |
+
+---
+
+## ✨ Features
+
+- **深掘り解説** — 正解の理由 + よくある落とし穴を毎問表示
+- **サービス比較表** — 類似サービスの違いを問題ごとに整理
+- **分野別フィルタ** — 苦手分野だけ絞って集中練習
+- **スコア追跡** — 正答率・連続正解・分野別グラフ（結果画面）
+- **ビルド不要** — ブラウザで開くだけ。npm install 不要
+- **ダークテーマ** — 目に優しい暗めのデザイン
+
+> ⚠️ アイコンフォントを CDN から読み込むため、初回表示にネット接続が必要です。
+
+---
+
+## 🚀 Getting started
+
+```bash
+git clone https://github.com/yourname/azure-az104-study.git
+cd azure-az104-study
+open index.html     # macOS
+# start index.html  # Windows
+```
+
+または GitHub Pages でブラウザから直接アクセス。
+
+---
+
+## 🗂 Structure
 
 ```
 azure-az104-study/
-├── index.html   # 問題演習アプリ（本ファイル）
-├── study.html   # 参考書ページ
+├── index.html    # 問題演習アプリ（100問収録）
+├── study.html    # 参考書ページ（チートシート・比較表・ポイント整理）
 └── README.md
 ```
 
----
-
-## 機能
-
-### 問題演習（index.html）
-
-| 機能 | 説明 |
-|------|------|
-| **分野フィルター** | 全て / ID管理 / ネットワーク / ストレージ / コンピューティング / 監視 / バックアップ から選択 |
-| **ランダム出題** | フィルター適用後にシャッフルして出題 |
-| **4択問題** | 選択するとその場で正誤判定 |
-| **解説パネル** | 正解理由（why）・ひっかけポイント（trap）・比較テーブル（cmp）・キーワード（kws）を表示 |
-| **比較テーブル** | 関連サービスをサービス名・特徴・RTO/特性・コスト・備考で並べて比較 |
-| **連続正解バッジ** | 3問以上連続正解で 🔥 ストリークバッジを表示 |
-| **進捗バー** | 現在の進行状況をプログレスバーで表示 |
-| **統計カード** | 回答数・正解数・不正解数・正解率をリアルタイム更新 |
-| **結果画面** | セッション終了後に総合スコア・円グラフ・分野別正解率を表示 |
-| **参考書リンク** | ヘッダーの「参考書」ボタンで `study.html` に遷移 |
+問題データは `index.html` 内の `const QS = [...]` に直接記載しています。
 
 ---
 
-## 問題データ仕様
+## ➕ Adding questions
 
-全 **100問**。`const QS = [...]` に格納。各問題は以下の構造を持つ。
+`index.html` 内の `const QS = [...]` に以下の形式でオブジェクトを追加してください。
 
 ```js
 {
-  domain: "ネットワーク",          // 分野（6種）
-  cat:    "Azure Firewall",       // カテゴリ（小分類）
-  diff:   "Hard",                 // 難易度: Easy | Medium | Hard
-  q:      "問題文...",
-  opts:   ["選択肢A","B","C","D"],  // 必ず4択
-  ans:    1,                       // 正解インデックス（0〜3）
-  why:    "正解の理由...",
-  trap:   "ひっかけポイント...",
-  cmp: [                           // 比較テーブル（1〜4行）
-    { svc:"サービス名", feature:"特徴", rto:"RTO/特性", cost:"コスト感", note:"備考" },
+  domain: "ネットワーク",  // 下表の値を使用
+  cat:    "NSG",           // バッジ表示用（自由記述）
+  diff:   "Medium",        // "Easy" | "Medium" | "Hard"
+  q:    "問題文...",
+  opts: ["選択肢A", "選択肢B", "選択肢C", "選択肢D"],
+  ans:  1,                 // 正解の選択肢インデックス（0始まり）
+  why:  "正解の理由...",
+  trap: "よくある落とし穴...",
+  cmp: [                   // サービス比較表（省略可）
+    { svc: "サービス名", feature: "特徴", rto: "RTO目安", cost: "低/中/高", note: "備考" }
   ],
-  kws:    ["キーワード1","キーワード2"]  // 3個以上推奨
+  kws: ["キーワード1", "キーワード2"]
 }
 ```
 
-### 分野別問題数・AZ-104試験比率
+### domain に指定できる値
 
-| 分野 | 問題数 | 主なカテゴリ |
-|------|--------|-------------|
-| ネットワーク | 25問 | VNet / NSG / VPN / DNS / Private Endpoint / Firewall / LB |
-| ID管理 | 20問 | 条件付きアクセス / RBAC / PIM / ManagedID / B2B / SSPR |
-| コンピューティング | 20問 | VM可用性 / App Service / AKS / ACI / Functions / VMSS |
-| ストレージ | 15問 | Blob / Files / Disk / 冗長性 / CDN / Soft Delete |
-| 監視 | 12問 | Azure Monitor / Log Analytics / KQL / Application Insights / Sentinel |
-| バックアップ | 8問 | Azure Backup / Site Recovery / PITR / Soft Delete / 保持ポリシー |
-| **合計** | **100問** | |
-
-### 難易度分布
-
-| 難易度 | 問題数 |
-|--------|--------|
-| Easy   | 9問    |
-| Medium | 57問   |
-| Hard   | 34問   |
+| 値 | カバーするトピック例 |
+|---|---|
+| `ネットワーク` | VNet・NSG・VPN Gateway・Azure Firewall・Private Endpoint・Bastion |
+| `ID管理` | Azure AD・条件付きアクセス・RBAC・PIM・Managed Identity・B2B |
+| `コンピューティング` | VM・App Service・AKS・ACI・Azure Functions・VMSS |
+| `ストレージ` | Blob Storage・Azure Files・Managed Disk・冗長性・CDN |
+| `監視` | Azure Monitor・Log Analytics・KQL・Application Insights・Sentinel |
+| `バックアップ` | Azure Backup・Recovery Services Vault・ASR・PITR |
 
 ---
 
-## 使い方
+## 📄 License
 
-1. `index.html` をブラウザで開く（ダブルクリックまたはローカルサーバー経由）
-2. 上部の分野ボタンで出題範囲を絞り込む（デフォルトは「全て」）
-3. 4つの選択肢から1つ選ぶと即座に正誤判定
-4. 解説・比較テーブル・キーワードを確認して「次へ」
-5. 全問回答後に結果画面で分野別の弱点を確認
-6. 「もう一度」でシャッフルして再挑戦
-
----
-
-## 技術仕様
-
-- **依存関係**: なし（外部CDN: Tabler Icons のみ）
-- **動作環境**: モダンブラウザ（Chrome / Edge / Firefox / Safari）
-- **サーバー**: 不要（静的HTMLファイル）
-- **データ永続化**: なし（ページリロードでリセット）
-
----
-
-## 問題を追加・編集する場合
-
-`index.html` 内の `const QS = [...]` に問題オブジェクトを追記する。  
-以下の点に注意。
-
-- `ans` は選択肢配列の **0始まりインデックス**（0〜3）
-- `opts` は **必ず4要素**
-- `diff` は `"Easy"` / `"Medium"` / `"Hard"` のいずれか（大文字始まり）
-- `domain` は `DOMAINS_ARR` に定義された6分野のいずれか
-- `cmp` の各行は `svc / feature / rto / cost / note` の5フィールドが必須
-
----
-
-## 関連リソース
-
-- [Microsoft Learn - AZ-104 学習パス](https://learn.microsoft.com/ja-jp/certifications/exams/az-104/)
-- [AZ-104 試験スキルの概要](https://learn.microsoft.com/ja-jp/credentials/certifications/resources/study-guides/az-104)
-- [Azure ドキュメント](https://learn.microsoft.com/ja-jp/azure/)
+MIT
