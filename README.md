@@ -62,7 +62,7 @@ open index.html     # macOS
 # start index.html  # Windows
 ```
 
-または [GitHub Pages](https://yourname.github.io/azure-az104-study/) でブラウザから直接アクセス。
+または [GitHub Pages](https://ykobayashi-jp.github.io/azure-az104-study/) でブラウザから直接アクセス。
 
 ---
 
